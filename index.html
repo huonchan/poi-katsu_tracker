@@ -1,71 +1,179 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Tracker</title>
+  <title>Tracker</title>
+  <script src="./js/tracker_save_data.js"></script>
 </head>
+
+
+
 <body>
 
-<h1>ポイ活記録</h1>
+  <h1>ポイ活記録</h1>
 
-<label for="date">日付:</label>
-<input type="date" id="date"> <br>
+  <div id="command_area">
+    <input type="text" id="command_box">
+    <button onclick="sendCommand()">command送信</button>
+    <div id="command_log">command log</div>
 
-<label for="activity">活動内容:</label>
-<input type="text" id="activity"> <br>
+    <script>
+      function sendCommand() {
+        const textbox = document.getElementById("command_box");
+        const text = textbox.value;
+        // 入力されたテキストをJavaScript側で処理
+        document.getElementById("command_log").innerText = text;
+      }
 
-<label for="points">獲得ポイント:</label>
-<input type="number" id="points"> <br>
 
-<button onclick="saveData()">保存</button>
+    </script>
+  </div>
 
-<ul id="recordList"></ul>
-<div id ="jsonText">aaa</div>
+  <div id="checker_area">
 
-<script>
-function saveData() {
-  const date = document.getElementById('date').value;
-  const activity = document.getElementById('activity').value;
-  const points = document.getElementById('points').value;
+    <div class="walking_task">
+      <div>散歩前確認</div>
+      <div>クラシルリワード：移動</div>
+      <div>Powl：移動</div>
+      <div>トリマ：移動</div>
+      <div>プラリー：移動</div>
+      <div>アルコイン：すごろく</div>
+    </div>
+  </div>
 
-  // ローカルストレージから既存のデータを取得、または空の配列で初期化
-  let records = JSON.parse(localStorage.getItem('poiActivityRecords')) || [];
+  <div class="refrain_task">
+    <div>1日複数回系</div>
+    <div> PontaGreenAction > </div>
+  </div>
 
-  // 新しいレコードを追加
-  records.push({ date, activity, points });
+  <div class="1day_task">
+    <div>1日1回系</div>
+    <div>楽天 >
+      <label for="rakuten_healthcare">ヘルスケア</label>
+      <input type="checkbox" id="rakuten_healthcare" name="rakuten_healthcare" value="value">
+      <label for="rakuten_senior">シニア</label>
+      <input type="checkbox" id="rakuten_senior" name="rakuten_senior" value="value">
+      <label for="rakuten_browser">ブラウザ</label>
+      <input type="checkbox" id="rakuten_browser" name="rakuten_browser" value="value">
+      <label for="rakuten_point_club">PointClub</label>
+      <input type="checkbox" id="rakuten_point_club" name="rakuten_point_club" value="value">
+      <label for="rakuten_point_web_kuzi">Webくじ</label>
+      <input type="checkbox" id="rakuten_point_web_kuzi" name="rakuten_point_web_kuzi" value="value">
+      <label for="rakuten_point_app_mall_kuzi">Appモールくじ</label>
+      <input type="checkbox" id="rakuten_point_app_mall_kuzi" name="rakuten_point_app_mall_kuzi" value="value">
+      <label for="rakuten_point_club">infoseek</label>
+      <input type="checkbox" id="rakuten_infoseek" name="rakuten_infoseek" value="value">
+    </div>
 
-  // ローカルストレージにデータを保存
-  localStorage.setItem('poiActivityRecords', JSON.stringify(records));
+    <div>クラシルリワード >
+      <label for="kurasiru_reward_walkcount">歩数</label>
+      <input type="checkbox" id="kurasiru_reward_walkcount" name="kurasiru_reward_walkcount" value="value">
+      <label for="kurasiru_reward_chirashi">チラシ</label>
+      <input type="checkbox" id="kurasiru_reward_chirashi" name="kurasiru_reward_chirashi" value="value">
+      <label for="kurasiru_reward_receipt">レシート</label>
+      <input type="checkbox" id="kurasiru_reward_receipt" name="kurasiru_reward_receipt" value="value">
+    </div>
+    <div>Powl >
+      <label for="powl_wakcount">歩数</label>
+      <input type="checkbox" id="powl_wakcount" name="powl_wakcount" value="value">
+      <label for="kurasiru_chat">チャット</label>
+      <input type="checkbox" id="kurasiru_chat" name="kurasiru_chat" value="value">
+    </div>
+    <div>トリマ >
+      <label for="trima_medal">メダル</label>
+      <input type="checkbox" id="trima_medal" name="trima_medal" value="value">
+      <label for="trima_walkcount">歩数</label>
+      <input type="checkbox" id="trima_walkcount" name="trima_walkcount" value="value">
+    </div>
+  </div>
 
-  // リストを更新
-  updateRecordList();
 
-  // 入力欄をクリア
-  document.getElementById('date').value = '';
-  document.getElementById('activity').value = '';
-  document.getElementById('points').value = '';
-}
+  <script>
 
-function updateRecordList() {
-  const recordList = document.getElementById('recordList');
-  recordList.innerHTML = ''; // リストをクリア
 
-  const data = localStorage.getItem('poiActivityRecords');
+    {
+      const checkbox = document.getElementById("rakuten_healthcare");
+      // changeイベントリスナーを追加
+      checkbox.addEventListener('change', function () {
+        save_data();
+        
+      });
+    }
 
-  const records = JSON.parse(data) || [];
+    
+    load_data();
 
-  records.forEach(record => {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${record.date}: ${record.activity} (${record.points}ポイント)`;
-    recordList.appendChild(listItem);
-  });
+  </script>
 
-  const divItem = document.getElementById('jsonText');
-  divItem.innerHTML = '<div>' + data + '</div>';
-}
+  </div>
 
-// ページ読み込み時にリストを更新
-updateRecordList();
-</script>
+
+
+  <details>
+    <summary>仮</summary>
+    <label for="date">日付:</label>
+    <input type="date" id="date"> <br>
+
+    <label for="activity">活動内容:</label>
+    <input type="text" id="activity"> <br>
+
+    <label for="points">獲得ポイント:</label>
+    <input type="number" id="points"> <br>
+
+    <button onclick="saveData()">保存</button>
+
+    <ul id="recordList"></ul>
+    <div id="jsonText">aaa</div>
+
+  </details>
+
+  <script>
+    function saveData() {
+      const date = document.getElementById('date').value;
+      const activity = document.getElementById('activity').value;
+      const points = document.getElementById('points').value;
+
+      // ローカルストレージから既存のデータを取得、または空の配列で初期化
+      let records = JSON.parse(localStorage.getItem('poiActivityRecords')) || [];
+
+      // 新しいレコードを追加
+      records.push({ date, activity, points });
+
+      // ローカルストレージにデータを保存
+      localStorage.setItem('poiActivityRecords', JSON.stringify(records));
+
+      // リストを更新
+      updateRecordList();
+
+      // 入力欄をクリア
+      document.getElementById('date').value = '';
+      document.getElementById('activity').value = '';
+      document.getElementById('points').value = '';
+    }
+
+    function updateRecordList() {
+      const recordList = document.getElementById('recordList');
+      recordList.innerHTML = ''; // リストをクリア
+
+      const data = localStorage.getItem('poiActivityRecords');
+
+      const records = JSON.parse(data) || [];
+
+      records.forEach(record => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${record.date}: ${record.activity} (${record.points}ポイント)`;
+        recordList.appendChild(listItem);
+      });
+
+      const divItem = document.getElementById('jsonText');
+      divItem.innerHTML = '<div>' + data + '</div>';
+    }
+
+    // ページ読み込み時にリストを更新
+    updateRecordList();
+  </script>
 
 </body>
+
+
 </html>
