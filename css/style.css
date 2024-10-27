@@ -1,0 +1,15 @@
+body {
+    background-image: url("../images/DQrHzFFVQAA1W6-.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* style.css */
+p, input[type="checkbox"] {
+    display: inline-block;
+}
+
+
+input[type="checkbox"] {
+    transform: scale(1.5); /* 1.5倍に拡大 */
+}
