@@ -23,27 +23,31 @@
         const textbox = document.getElementById("command_box");
         const text = textbox.value;
 
-        switch( text)
-        {
+        switch (text) {
           case "all delete":
-          localStorage.clear();
-          document.getElementById("command_log").innerText = "all delete";
-          break;
+            localStorage.clear();
+            document.getElementById("command_log").innerText = "all delete";
+            break;
           default:
-          document.getElementById("command_log").innerText = `んなコマンドねーよ > ${text}`;
-          break;
+            document.getElementById("command_log").innerText = `んなコマンドねーよ > ${text}`;
+            break;
         }
-        
+
       }
 
 
     </script>
   </div>
 
-  <div id="rakuten">
+
+  <h1>aaa</h1>
+
+  <div id="move_area">
   </div>
 
-  
+  <div id="1day_area">
+  </div>
+
 
   <script>
 
