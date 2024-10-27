@@ -3,47 +3,92 @@
 
 const DATA_NAME = "TRACKER";
 
-const TRACKER_DATA_TEMP =
+const PROPERTY_DATA =
 {
     rakuten:
     {
-        healthcare: true,//仮
-        senior: false,
-        browser: false,
-        point_club: false ,
+        "text": { "value": "楽天" },
+        "child":
+        {
+            "healthcare": { "id": "rakuten_healthcare", "label": "ヘルスケア", "checkbox": false },//仮
+            "senior": { "id": "rakuten_senior", "label": "シニア", "checkbox": false },
+            "browser": { "id": "rakuten_browser", "label": "ブラウザ", "checkbox": false },
+            "point_club": { "id": "rakuten_point_clab", "label": "PointClub", "checkbox": false },
+        }
     }
+};
+
+var propert_data = PROPERTY_DATA;//null入れたかったが事故防止でテンプレ代入
+
+var scriptHtml = "";
+var rakutenHtml = "";
+
+function read_property(property) {
+    var html = '';
+    var id = '';
+    for (const key in property) {
+        var value = property[key];
+        //str += `${key}`;
+        switch (key) {
+            case "id":
+                id = value;
+                break;
+            case "class":
+                //todo:使う時になったら
+
+                break;
+            case "value":
+                html += `<div id="${id}">${value}</div>`;
+                break;
+            case "label":
+                html += `<label for="${id}">${value}</label>`;
+                //str += `<div> ${value} </div>`;
+                break;
+            case "checkbox":
+                html += `<input type="checkbox" id="${id}" name="${id}" value="value">`;
+                scriptHtml += `
+                
+                {
+                    const checkbox = document.getElementById('${id}'); 
+
+                    var v = localStorage.getItem("${id}");
+                    if( v != null)
+                    {
+                        checkbox.checked = v ;
+                    }
+
+                    checkbox.addEventListener('change', function() {
+                        localStorage.setItem("${id}", this.checked);
+                    });
+                }
+                
+                `;
+                break;
+            default: //property name
+                //str += `key: ${key}, value: ${property[key]}`;
+                html += read_property(property[key]);
+                //read_property(property[key]);
+                break;
+        }
+
+    }
+
+    return html;
 }
 
-var json_data_tracker = TRACKER_DATA_TEMP;//null入れたかったが事故防止でテンプレ代入
+function create_rakuten_html() {
+    var log = ``;
+    rakutenHtml = read_property(propert_data["rakuten"]);
+    // document.getElementById("command_log").innerText = log;
+
+    document.getElementById("rakuten").innerHTML = rakutenHtml;
+    const script = document.createElement('script');
+    script.text = `${scriptHtml}`; // scriptタグの内容を直接記述する場合
+    document.body.appendChild(script);
+}
 
 function load_data() {
-    var jsonStr = localStorage.getItem(DATA_NAME);
-    document.getElementById("command_log").innerText = jsonStr;
-    if (jsonStr === null) 
-    {
-        json_data_tracker = TRACKER_DATA_TEMP;
-        const jsonData = JSON.stringify(json_data_tracker);
-        localStorage.setItem(DATA_NAME, jsonData);
-    }else
-    {
-        json_data_tracker = JSON.parse(jsonStr);
-    }
-
-    document.getElementById("rakuten_healthcare").checked = json_data_tracker["rakuten"]["healthcare"];
-    document.getElementById("rakuten_senior").checked = json_data_tracker["rakuten"]["senior"];
-    document.getElementById("rakuten_browser").checked = json_data_tracker["rakuten"]["browser"];
-    document.getElementById("rakuten_point_club").checked = json_data_tracker["rakuten"]["point_club"];
-}
-
-function save_data() {
-    json_data_tracker["rakuten"]["healthcare"] = document.getElementById("rakuten_healthcare").checked;
-    json_data_tracker["rakuten"]["senior"] = document.getElementById("rakuten_senior").checked;
-    json_data_tracker["rakuten"]["browser"] = document.getElementById("rakuten_browser").checked ;
-    json_data_tracker["rakuten"]["point_club"] = document.getElementById("rakuten_point_club").checked;
-    const jsonData = JSON.stringify(json_data_tracker);
-    localStorage.setItem(DATA_NAME, jsonData);
-
-    document.getElementById("command_log").innerText = jsonData;
+    create_rakuten_html();
 }
 
 load_data();
