@@ -49,9 +49,24 @@
   </div>
 
 
+  <div>
+    TODO:ここにタイマー処理
+  </div>
+
+  <div>
+    TODO:ここに確率系入力記録処理
+  </div>
+
+
   <script>
 
     load_data();
+
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        location.reload();
+      }
+    });
 
   </script>
 
